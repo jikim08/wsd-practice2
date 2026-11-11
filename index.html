@@ -355,6 +355,9 @@
     try {
       const res = await fetch(endpoint, { signal });
       const json = await res.json();
+
+      if(signal.aborted) return;
+
       const t1 = performance.now();
 
       document.getElementById('latencyBadge').textContent = `${(t1 - t0).toFixed(2)}ms`;
@@ -459,6 +462,9 @@
   // 300ms 디바운스 실시간 검색 인풋 이벤트
   document.getElementById('searchInput').addEventListener('input', (e) => {
     clearTimeout(debounceTimer);
+    if (currentAbortController) {
+      currentAbortController.abort();
+    }
     debounceTimer = setTimeout(() => {
       state.search = e.target.value.trim();
       state.page = 1;
