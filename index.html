@@ -346,6 +346,7 @@
     } else {
       const q = new URLSearchParams({ limit: state.limit });
       if (state.cursor) q.set('cursor', state.cursor);
+      if (state.search) q.set('search', state.search);
       endpoint = `/api/posts/cursor?${q.toString()}`;
     }
 
